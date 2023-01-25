@@ -21,7 +21,9 @@
       </tr>
     </tbody>
   </table>
-  <EmailView v-if="openedEmail" :email="openedEmail"/> 
+  <ModalView v-if="openedEmail" @closeModal="openedEmail = null">
+    <EmailView :email="openedEmail"/> 
+  </ModalView>
 </template>
 
 <script>
@@ -29,6 +31,7 @@ import axios from 'axios'
 import { format } from 'date-fns'
 import { ref } from 'vue';
 import EmailView from '@/components/EmailView.vue';
+import ModalView from '@/components/ModalView.vue';
 
 export default {
   async setup() {
@@ -41,7 +44,8 @@ export default {
     };
   },
   components: {
-    EmailView
+    EmailView,
+    ModalView
   },
   computed: {
     // sortedEmails(){
