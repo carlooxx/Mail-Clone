@@ -37,10 +37,11 @@ export default {
   async setup() {
     let response = await axios.get('http://localhost:3000/emails')
     let emails = ref(response.data)
+    let openedEmail = ref(null)
     return {
         format,
         emails,
-        openedEmail: null
+        openedEmail
     };
   },
   components: {
