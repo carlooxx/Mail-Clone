@@ -60,8 +60,10 @@ export default {
   },
   methods: {
     openEmail(email){
-      email.read = true;
-      this.updateEmail(email)
+      if(email){
+        email.read = true;
+        this.updateEmail(email)
+      }
       this.openedEmail = email
     },
     archiveEmail(email){
@@ -71,12 +73,18 @@ export default {
     updateEmail(email){
       axios.put(`http://localhost:3000/emails/${email.id}`, email)
     },
-    changeEmail({toggleRead, toggleArchived, save, closeModal}){
+    changeEmail({toggleRead, toggleArchive, save, closeModal, changeIndex}){
       let email = this.openedEmail
       if(toggleRead){ email.read = !email.read }
-      if(toggleArchived){ email.archived = !email.archived }
+      if(toggleArchive){ email.archived = !email.archived }
       if(save){ this.updateEmail(email) }
       if(closeModal){ this.openedEmail = null }
+      if(changeIndex){
+        let emails = this.unarchivedEmails
+        let currentIndex = emails.indexOf(this.openedEmail)
+        let newEmail = emails[currentIndex + changeIndex]
+        this.openEmail(newEmail)
+      }
     }
   }
 };
