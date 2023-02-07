@@ -5,16 +5,20 @@
         v-for="email in unarchivedEmails"
         :key="email.id"
         :class="['clickable', email.read ? 'read' : '']"
-        @click="openEmail(email)"
       >
-        <td><input type="checkbox" /></td>
-        <td>{{ email.from }}</td>
         <td>
+          <input type="checkbox" 
+                  @click="emailSelection.toggle(email)"
+                  :selected="emailSelection.emails.has(email)"
+                  />
+        </td>
+        <td @click="openEmail(email)">{{ email.from }}</td>
+        <td @click="openEmail(email)">
           <p>
             <strong>{{ email.subject }}</strong> - {{ email.body }}
           </p>
         </td>
-        <td class="date">
+        <td class="date" @click="openEmail(email)">
           {{ format(new Date(email.sentAt), "MMM do yyyy") }}
         </td>
         <td><button @click="archiveEmail(email)">Archive</button></td>
@@ -29,7 +33,7 @@
 <script>
 import axios from 'axios'
 import { format } from 'date-fns'
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import EmailView from '@/components/EmailView.vue';
 import ModalView from '@/components/ModalView.vue';
 
@@ -38,7 +42,19 @@ export default {
     let response = await axios.get('http://localhost:3000/emails')
     let emails = ref(response.data)
     let openedEmail = ref(null)
+    let selected = reactive(new Set())
+    let emailSelection = {
+      emails: selected,
+      toggle(email){
+        if(selected.has(email)){
+          selected.delete(email)
+        }else {
+          selected.add(email)
+        }
+      }
+    }
     return {
+        emailSelection,
         format,
         emails,
         openedEmail
