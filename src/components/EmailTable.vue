@@ -33,28 +33,19 @@
 <script>
 import axios from 'axios'
 import { format } from 'date-fns'
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 import EmailView from '@/components/EmailView.vue';
 import ModalView from '@/components/ModalView.vue';
+import useEmailSelection from './composables/useEmailSelection';
 
 export default {
   async setup() {
     let response = await axios.get('http://localhost:3000/emails')
     let emails = ref(response.data)
     let openedEmail = ref(null)
-    let selected = reactive(new Set())
-    let emailSelection = {
-      emails: selected,
-      toggle(email){
-        if(selected.has(email)){
-          selected.delete(email)
-        }else {
-          selected.add(email)
-        }
-      }
-    }
+    
     return {
-        emailSelection,
+      emailSelection: useEmailSelection(),
         format,
         emails,
         openedEmail
