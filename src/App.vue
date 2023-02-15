@@ -60,7 +60,7 @@ input[type='checkbox'] {
   padding: 10px;
 }
 input[type='checkbox'].partial-check {
-  background: #ABC;
+  background: #ABD;
 }
 input[type='checkbox']:checked {
   background: #679;
