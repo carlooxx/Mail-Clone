@@ -1,9 +1,11 @@
 <template>
-  <BulkAction :emails="unarchivedEmails"/>
+  <button @click="selectScreen('inbox')" :disabled="selectedScreen == 'inbox'">Inbox</button>
+  <button @click="selectScreen('archive')" :disabled="selectedScreen == 'archive'">Archived</button>
+  <BulkAction :emails="filteredEmails"/>
   <table class="mail-table">
     <tbody>
       <tr
-        v-for="email in unarchivedEmails"
+        v-for="email in filteredEmails"
         :key="email.id"
         :class="['clickable', email.read ? 'read' : '']"
       >
@@ -50,7 +52,8 @@ export default {
       emailSelection: useEmailSelection(),
         format,
         emails,
-        openedEmail
+        openedEmail,
+        selectedScreen: ref('inbox'),
     };
   },
   components: {
@@ -59,16 +62,19 @@ export default {
     BulkAction
   },
   computed: {
-    // sortedEmails(){
-    //   return this.emails.sort((e1, e2) => {
-    //     return e1.sentAt < e2.sentAt ? 1 : -1
-    //   })
-    // },
-    unarchivedEmails(){
-      return this.emails.filter(e => !e.archived)
+    filteredEmails(){
+      if(this.selectedScreen == 'inbox') {
+        return this.emails.filter(e => !e.archived)
+      } else {
+        return this.emails.filter(e => e.archived)
+      }
     }
   },
   methods: {
+    selectScreen(newScreen) {
+      this.selectedScreen = newScreen
+      this.emailSelection.clear()
+    },
     openEmail(email){
       if(email){
         email.read = true;

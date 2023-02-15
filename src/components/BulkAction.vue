@@ -19,12 +19,12 @@ export default {
         let { emails } = toRefs(props);
         let emailSelection = useEmailSelection();
         let numberSelected = computed(() => emailSelection.emails.size);
-        let numberEmails = emails.value.length;
+        let numberEmails = computed(() => emails.value.length);
         let allEmailSelected = computed(
-            () => numberSelected.value === numberEmails
+            () => numberSelected.value === numberEmails.value
         );
         let someEmailSelected = computed(
-            () => numberSelected.value > 0 && numberSelected.value < numberEmails
+            () => numberSelected.value > 0 && numberSelected.value < numberEmails.value
         );
         let bulkSelect = function () {
             if (allEmailSelected.value) {
