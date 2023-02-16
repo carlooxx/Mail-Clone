@@ -1,4 +1,4 @@
-# gmail
+# Mail - Clone
 
 ## Project setup
 ```
