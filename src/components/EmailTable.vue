@@ -96,7 +96,7 @@ export default {
       if(save){ this.updateEmail(email) }
       if(closeModal){ this.openedEmail = null }
       if(changeIndex){
-        let emails = this.unarchivedEmails
+        let emails = this.filteredEmails
         let currentIndex = emails.indexOf(this.openedEmail)
         let newEmail = emails[currentIndex + changeIndex]
         this.openEmail(newEmail)
